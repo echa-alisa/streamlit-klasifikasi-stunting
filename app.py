@@ -20,13 +20,45 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # Buat tampilan web menggunakan Streamlit
 st.title('Aplikasi Klasifikasi Status Stunting')
 
-# Upload dataset
-uploaded_file = st.file_uploader("Upload dataset CSV", type=["csv"])
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+# Load dataset langsung di dalam kode
+@st.cache_data
+def load_data():
+    # Ganti path dengan path yang sesuai jika perlu
+    return pd.read_csv('dataset_diabetes_skripsi.csv')
+
+df = load_data()
+
+# Buat sidebar untuk navigasi
+st.sidebar.title("Navigasi")
+page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model"))
+
+if page == "Informasi Dataset":
+    st.header("Informasi Dataset")
     st.write("Dataframe:")
     st.write(df)
 
+elif page == "Visualisasi":
+    st.header("Visualisasi Data")
+    
+    # Visualisasi distribusi jenis kelamin
+    st.subheader("Distribusi Jenis Kelamin")
+    st.bar_chart(df['JK'].value_counts())
+
+    # Visualisasi distribusi tinggi badan
+    st.subheader("Distribusi Tinggi Badan")
+    fig1, ax1 = plt.subplots()
+    sns.histplot(df['Tinggi'], kde=True, ax=ax1, color='purple', bins=30)
+    st.pyplot(fig1)
+
+    # Visualisasi distribusi Z-Score tinggi badan
+    st.subheader("Distribusi Z-Score Tinggi Badan")
+    fig2, ax2 = plt.subplots()
+    sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
+    st.pyplot(fig2)
+
+elif page == "Jalankan Model":
+    st.header('Jalankan Model')
+    
     # Data preprocessing
     df['BB_Lahir'].replace(0, np.nan, inplace=True)
     df['TB_Lahir'].replace(0, np.nan, inplace=True)
@@ -80,7 +112,6 @@ if uploaded_file is not None:
     # Learning Rate
     learning_rate = 0.001
     st.write(f"Learning Rate yang digunakan: {learning_rate}")
-
 
     # Tambahkan tombol untuk melatih model
     if st.button('Latih Model'):
