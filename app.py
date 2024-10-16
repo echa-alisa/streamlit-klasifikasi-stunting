@@ -33,15 +33,29 @@ st.sidebar.title("Navigasi")
 page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model"))
 
 if page == "Informasi Dataset":
-    # Penjelasan tentang Stunting
-    st.subheader("Apa itu Stunting?")
-    st.write(
-        "Stunting adalah kondisi di mana seorang anak mengalami pertumbuhan yang terhambat, "
-        "biasanya diakibatkan oleh kekurangan gizi kronis, infeksi berulang, dan faktor lingkungan "
-        "yang tidak mendukung. Stunting dapat mempengaruhi perkembangan fisik dan mental anak, "
-        "serta dapat berakibat pada produktivitas di masa depan."
-    )
+    st.header("Informasi Dataset")
+    st.write("### Apa itu Stunting?")
+    st.write("Stunting adalah kondisi di mana tinggi badan seorang anak jauh lebih rendah dibandingkan dengan standar tinggi badan anak seusianya. Hal ini biasanya disebabkan oleh malnutrisi kronis, terutama pada usia dini. Stunting dapat memengaruhi pertumbuhan fisik dan perkembangan kognitif anak, serta berpotensi menyebabkan masalah kesehatan di kemudian hari.")
     
+    st.write("### Deskripsi Dataset")
+    st.write("Dataset ini berisi informasi tentang status gizi anak, khususnya terkait dengan stunting. Dataset ini digunakan untuk menganalisis dan memprediksi status gizi anak berdasarkan berbagai faktor, termasuk jenis kelamin, umur, berat badan, tinggi badan, dan beberapa variabel lainnya.")
+    
+    st.write("### Fitur-Fitur dalam Dataset")
+    st.write("- **JK (Jenis Kelamin)**: Kategori yang menunjukkan jenis kelamin anak.")
+    st.write("- **Umur**: Usia anak dalam bulan.")
+    st.write("- **Berat**: Berat badan anak dalam kilogram.")
+    st.write("- **Tinggi**: Tinggi badan anak dalam sentimeter.")
+    st.write("- **BB_Lahir**: Berat badan anak saat lahir.")
+    st.write("- **TB_Lahir**: Tinggi badan anak saat lahir.")
+    st.write("- **ZS_TB_U**: Z-Score tinggi badan menurut umur.")
+    st.write("- **Status**: Kategori status gizi anak.")
+    
+    st.write("### Tujuan Penggunaan Dataset")
+    st.write("Dataset ini digunakan untuk menganalisis faktor-faktor yang berkontribusi terhadap stunting pada anak, serta untuk membangun model prediktif untuk mengidentifikasi risiko stunting.")
+    
+    st.write("### Sumber Dataset")
+    st.write("Sumber dataset dapat ditambahkan di sini.")
+        
     st.header("Informasi Dataset")
     st.write("Dataframe:")
     st.write(df)
