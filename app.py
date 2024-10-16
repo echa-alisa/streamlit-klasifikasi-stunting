@@ -34,6 +34,16 @@ page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "
 
 if page == "Informasi Dataset":
     st.header("Informasi Dataset")
+    
+    # Penjelasan tentang Stunting
+    st.subheader("Apa itu Stunting?")
+    st.write("""
+    Stunting adalah kondisi di mana anak mengalami pertumbuhan yang terhambat akibat kekurangan gizi yang kronis, 
+    infeksi berulang, dan faktor lingkungan yang tidak mendukung. 
+    Stunting dapat mengakibatkan dampak jangka panjang terhadap kesehatan fisik dan perkembangan kognitif anak. 
+    Oleh karena itu, pencegahan stunting menjadi prioritas dalam kebijakan kesehatan masyarakat.
+    """)
+
     st.write("Dataframe:")
     st.write(df)
 
@@ -42,16 +52,31 @@ elif page == "Visualisasi":
     
     # Visualisasi distribusi jenis kelamin
     st.subheader("Distribusi Jenis Kelamin")
+    st.write("""
+    Grafik di bawah ini menunjukkan distribusi jenis kelamin dalam dataset. 
+    Anda dapat melihat perbandingan antara jumlah anak laki-laki dan perempuan.
+    """)
     st.bar_chart(df['JK'].value_counts())
 
     # Visualisasi distribusi tinggi badan
     st.subheader("Distribusi Tinggi Badan")
+    st.write("""
+    Histogram ini menunjukkan distribusi tinggi badan anak-anak dalam dataset. 
+    Garis KDE (Kernel Density Estimate) membantu kita memahami bentuk distribusi data 
+    dengan memberikan gambaran yang lebih halus.
+    """)
     fig1, ax1 = plt.subplots()
     sns.histplot(df['Tinggi'], kde=True, ax=ax1, color='purple', bins=30)
     st.pyplot(fig1)
 
     # Visualisasi distribusi Z-Score tinggi badan
     st.subheader("Distribusi Z-Score Tinggi Badan")
+    st.write("""
+    Histogram ini menunjukkan distribusi Z-Score tinggi badan anak-anak dalam dataset. 
+    Z-Score adalah ukuran yang menunjukkan seberapa jauh tinggi badan anak dari rata-rata 
+    tinggi badan populasi yang sama. Ini digunakan untuk menilai apakah seorang anak 
+    mengalami stunting atau tidak.
+    """)
     fig2, ax2 = plt.subplots()
     sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
     st.pyplot(fig2)
@@ -79,6 +104,15 @@ elif page == "Jalankan Model":
     
     y = df['Status']
     st.write('Target (y):')
+
+    st.write("""
+    - **Features (X)**: Ini adalah variabel yang digunakan untuk memprediksi status stunting. 
+      Variabel ini mencakup jenis kelamin, umur, berat, tinggi, berat badan lahir, tinggi badan lahir, 
+      dan Z-Score tinggi badan.
+    
+    - **Target (y)**: Ini adalah variabel yang ingin kita prediksi, yaitu status stunting yang 
+      merupakan kategori dari status pertumbuhan anak.
+    """)
     st.write(y)
 
     # Skalakan fitur ke rentang [0, 1] menggunakan MinMaxScaler
@@ -168,7 +202,8 @@ elif page == "Jalankan Model":
         cm_df = pd.DataFrame(cm, index=['Actual Class 0', 'Actual Class 1', 'Actual Class 2'], columns=['LSTM Class 0', 'LSTM Class 1', 'LSTM Class 2'])
         st.write(cm_df)
 
-        # Tampilkan tabel data aktual dan hasil klasifikasi LSTM
-        st.subheader('Tabel Data Aktual dan Hasil Klasifikasi LSTM')
-        results_df = pd.DataFrame({'Actual': y_true, 'LSTM': y_pred_classes})
-        st.write(results_df)
+        # Penjelasan Confusion Matrix
+        st.write("""
+        Confusion Matrix adalah alat untuk mengevaluasi performa model klasifikasi. 
+        Ini menunjukkan jumlah prediksi yang benar dan salah dari setiap kelas. 
+        Setiap baris mewakili jumlah prediksi aktual dari setiap kelas,
