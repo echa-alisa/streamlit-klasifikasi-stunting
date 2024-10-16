@@ -34,49 +34,40 @@ page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "
 
 if page == "Informasi Dataset":
     st.header("Informasi Dataset")
-    
-    # Penjelasan tentang Stunting
-    st.subheader("Apa itu Stunting?")
-    st.write("""
-    Stunting adalah kondisi di mana anak mengalami pertumbuhan yang terhambat akibat kekurangan gizi yang kronis, 
-    infeksi berulang, dan faktor lingkungan yang tidak mendukung. 
-    Stunting dapat mengakibatkan dampak jangka panjang terhadap kesehatan fisik dan perkembangan kognitif anak. 
-    Oleh karena itu, pencegahan stunting menjadi prioritas dalam kebijakan kesehatan masyarakat.
-    """)
-
     st.write("Dataframe:")
     st.write(df)
+
+    # Penjelasan tentang Stunting
+    st.subheader("Apa itu Stunting?")
+    st.write(
+        "Stunting adalah kondisi di mana seorang anak mengalami pertumbuhan yang terhambat, "
+        "biasanya diakibatkan oleh kekurangan gizi kronis, infeksi berulang, dan faktor lingkungan "
+        "yang tidak mendukung. Stunting dapat mempengaruhi perkembangan fisik dan mental anak, "
+        "serta dapat berakibat pada produktivitas di masa depan."
+    )
 
 elif page == "Visualisasi":
     st.header("Visualisasi Data")
     
     # Visualisasi distribusi jenis kelamin
     st.subheader("Distribusi Jenis Kelamin")
-    st.write("""
-    Grafik di bawah ini menunjukkan distribusi jenis kelamin dalam dataset. 
-    Anda dapat melihat perbandingan antara jumlah anak laki-laki dan perempuan.
-    """)
+    st.write("Grafik ini menunjukkan distribusi jenis kelamin dalam dataset. "
+             "Dari grafik ini, kita dapat melihat perbandingan antara jumlah anak laki-laki dan perempuan.")
     st.bar_chart(df['JK'].value_counts())
 
     # Visualisasi distribusi tinggi badan
     st.subheader("Distribusi Tinggi Badan")
-    st.write("""
-    Histogram ini menunjukkan distribusi tinggi badan anak-anak dalam dataset. 
-    Garis KDE (Kernel Density Estimate) membantu kita memahami bentuk distribusi data 
-    dengan memberikan gambaran yang lebih halus.
-    """)
+    st.write("Grafik ini menunjukkan distribusi tinggi badan anak-anak dalam dataset. "
+             "Garis KDE (Kernel Density Estimate) memberikan gambaran yang lebih halus mengenai "
+             "distribusi tinggi badan tersebut.")
     fig1, ax1 = plt.subplots()
     sns.histplot(df['Tinggi'], kde=True, ax=ax1, color='purple', bins=30)
     st.pyplot(fig1)
 
     # Visualisasi distribusi Z-Score tinggi badan
     st.subheader("Distribusi Z-Score Tinggi Badan")
-    st.write("""
-    Histogram ini menunjukkan distribusi Z-Score tinggi badan anak-anak dalam dataset. 
-    Z-Score adalah ukuran yang menunjukkan seberapa jauh tinggi badan anak dari rata-rata 
-    tinggi badan populasi yang sama. Ini digunakan untuk menilai apakah seorang anak 
-    mengalami stunting atau tidak.
-    """)
+    st.write("Grafik ini menunjukkan distribusi Z-Score tinggi badan. Z-Score digunakan untuk "
+             "mengukur seberapa jauh tinggi badan anak dari rata-rata tinggi badan populasi sebayanya.")
     fig2, ax2 = plt.subplots()
     sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
     st.pyplot(fig2)
@@ -104,16 +95,13 @@ elif page == "Jalankan Model":
     
     y = df['Status']
     st.write('Target (y):')
-
-    st.write("""
-    - **Features (X)**: Ini adalah variabel yang digunakan untuk memprediksi status stunting. 
-      Variabel ini mencakup jenis kelamin, umur, berat, tinggi, berat badan lahir, tinggi badan lahir, 
-      dan Z-Score tinggi badan.
-    
-    - **Target (y)**: Ini adalah variabel yang ingin kita prediksi, yaitu status stunting yang 
-      merupakan kategori dari status pertumbuhan anak.
-    """)
     st.write(y)
+
+    # Penjelasan tentang features dan target
+    st.subheader("Penjelasan tentang Features (X) dan Target (y)")
+    st.write("Features (X) adalah variabel independen yang digunakan untuk memprediksi status stunting. "
+             "Ini mencakup informasi seperti jenis kelamin, umur, berat badan, tinggi badan, dan data kelahiran. "
+             "Target (y) adalah variabel dependen yang ingin kita prediksi, yaitu status stunting anak.")
 
     # Skalakan fitur ke rentang [0, 1] menggunakan MinMaxScaler
     scaler = MinMaxScaler()
@@ -202,8 +190,24 @@ elif page == "Jalankan Model":
         cm_df = pd.DataFrame(cm, index=['Actual Class 0', 'Actual Class 1', 'Actual Class 2'], columns=['LSTM Class 0', 'LSTM Class 1', 'LSTM Class 2'])
         st.write(cm_df)
 
-        # Penjelasan Confusion Matrix
-        st.write("""
-        Confusion Matrix adalah alat untuk mengevaluasi performa model klasifikasi. 
-        Ini menunjukkan jumlah prediksi yang benar dan salah dari setiap kelas. 
-        Setiap baris mewakili jumlah prediksi aktual dari setiap kelas,
+        st.write("Confusion matrix adalah tabel yang digunakan untuk mengevaluasi kinerja model klasifikasi. "
+         "Ini menunjukkan jumlah prediksi yang benar dan salah untuk setiap kelas. "
+         "Dari confusion matrix, kita dapat menghitung metrik evaluasi lain seperti akurasi, presisi, "
+         "recall, dan F1-score. Berikut adalah penjelasan dari masing-masing metrik tersebut:")
+
+        st.write("1. **Akurasi**: Mengukur proporsi prediksi yang benar dari total prediksi. "
+                 "Rumus: (TP + TN) / (TP + TN + FP + FN), di mana TP = True Positives, TN = True Negatives, "
+                 "FP = False Positives, FN = False Negatives.")
+        
+        st.write("2. **Presisi**: Mengukur proporsi prediksi positif yang benar dari seluruh prediksi positif. "
+                 "Rumus: TP / (TP + FP). Ini menunjukkan seberapa banyak prediksi positif kita yang benar.")
+        
+        st.write("3. **Recall** (Sensitivity): Mengukur proporsi prediksi positif yang benar dari semua kasus positif. "
+                 "Rumus: TP / (TP + FN). Ini menunjukkan seberapa baik model kita dalam menangkap semua kasus positif.")
+        
+        st.write("4. **F1-Score**: Merupakan rata-rata harmonis dari presisi dan recall. F1-score memberikan keseimbangan antara "
+                 "presisi dan recall, yang berguna ketika kita memiliki distribusi kelas yang tidak seimbang. "
+                 "Rumus: 2 * (Presisi * Recall) / (Presisi + Recall).")
+        
+        st.write("Dengan menggunakan confusion matrix dan metrik evaluasi ini, kita dapat lebih memahami "
+                 "kinerja model kita dan membuat perbaikan yang diperlukan.")
