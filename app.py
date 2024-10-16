@@ -52,13 +52,13 @@ if page == "Informasi Dataset":
     st.write("- **BB_Lahir**: Berat badan anak saat lahir.")
     st.write("- **TB_Lahir**: Tinggi badan anak saat lahir.")
     st.write("- **ZS_TB_U**: Z-Score tinggi badan menurut umur.")
-    st.write("- **Status**: Kategori status gizi anak.")
+    st.write("- **Status**: Kategori status anak.")
     
     st.write("### Tujuan Penggunaan Dataset")
-    st.write("Dataset ini digunakan untuk menganalisis faktor-faktor yang berkontribusi terhadap stunting pada anak, serta untuk membangun model prediktif untuk mengidentifikasi risiko stunting.")
+    st.write("Dataset ini digunakan untuk menganalisis faktor-faktor yang berkontribusi terhadap stunting pada anak, serta untuk membangun model klasifikasi untuk mengidentifikasi risiko stunting.")
     
     st.write("### Sumber Dataset")
-    st.write("Sumber dataset dapat ditambahkan di sini.")
+    st.write("Sumber dataset ini berasal dari Dinas Kesehatan Kota Bogor.")
 
 elif page == "Visualisasi":
     st.header("Visualisasi Data")
