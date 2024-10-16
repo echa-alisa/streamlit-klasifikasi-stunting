@@ -23,8 +23,7 @@ st.title('Aplikasi Klasifikasi Status Stunting')
 # Load dataset langsung di dalam kode
 @st.cache_data
 def load_data():
-    # Ganti path dengan path yang sesuai jika perlu
-    return pd.read_csv('dataset_diabetes_skripsi.csv')
+    return pd.read_csv('dataset_stunting_skripsi.csv')
 
 df = load_data()
 
