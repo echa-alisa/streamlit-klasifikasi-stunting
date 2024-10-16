@@ -59,6 +59,9 @@ if page == "Informasi Dataset":
     st.write("### Sumber Dataset")
     st.write("Sumber dataset ini berasal dari Dinas Kesehatan Kota Bogor.")
 
+    st.write("### Split Dataset")
+    st.write("Pembagian dataset ini menggunakan 80:20, di mana 80% akan digunakan sebagai data test dan 20% sebagai data latih.")
+
 elif page == "Visualisasi":
     st.header("Visualisasi Data")
     
