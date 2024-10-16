@@ -190,6 +190,36 @@ elif page == "Jalankan Model":
         cm_df = pd.DataFrame(cm, index=['Actual Class 0', 'Actual Class 1', 'Actual Class 2'], columns=['LSTM Class 0', 'LSTM Class 1', 'LSTM Class 2'])
         st.write(cm_df)
 
+        # Menghitung metrik evaluasi
+        TP = np.diag(cm)  # True Positives
+        FP = np.sum(cm, axis=0) - TP  # False Positives
+        FN = np.sum(cm, axis=1) - TP  # False Negatives
+        TN = np.sum(cm) - (FP + FN + TP)  # True Negatives
+        
+        # Akurasi
+        accuracy = np.sum(TP) / np.sum(cm)
+        
+        # Presisi dan Recall per kelas
+        precision = TP / (TP + FP)
+        recall = TP / (TP + FN)
+        
+        # F1-Score per kelas
+        f1_score = 2 * (precision * recall) / (precision + recall)
+        
+        # Menampilkan metrik evaluasi
+        st.subheader("Metrik Evaluasi")
+        st.write(f"Akurasi: {accuracy:.4f}")
+        
+        # Tampilkan Presisi, Recall, dan F1-Score untuk setiap kelas
+        metrics_df = pd.DataFrame({
+            'Kelas': ['Class 0', 'Class 1', 'Class 2'],
+            'Presisi': precision,
+            'Recall': recall,
+            'F1-Score': f1_score
+        })
+        
+        st.write(metrics_df)
+
         st.write("Confusion matrix adalah tabel yang digunakan untuk mengevaluasi kinerja model klasifikasi. "
          "Ini menunjukkan jumlah prediksi yang benar dan salah untuk setiap kelas. "
          "Dari confusion matrix, kita dapat menghitung metrik evaluasi lain seperti akurasi, presisi, "
