@@ -33,10 +33,6 @@ st.sidebar.title("Navigasi")
 page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model"))
 
 if page == "Informasi Dataset":
-    st.header("Informasi Dataset")
-    st.write("Dataframe:")
-    st.write(df)
-
     # Penjelasan tentang Stunting
     st.subheader("Apa itu Stunting?")
     st.write(
@@ -45,6 +41,10 @@ if page == "Informasi Dataset":
         "yang tidak mendukung. Stunting dapat mempengaruhi perkembangan fisik dan mental anak, "
         "serta dapat berakibat pada produktivitas di masa depan."
     )
+    
+    st.header("Informasi Dataset")
+    st.write("Dataframe:")
+    st.write(df)
 
 elif page == "Visualisasi":
     st.header("Visualisasi Data")
