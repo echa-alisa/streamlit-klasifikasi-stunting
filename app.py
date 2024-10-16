@@ -36,7 +36,11 @@ if page == "Informasi Dataset":
     st.header("Informasi Dataset")
     st.write("### Apa itu Stunting?")
     st.write("Stunting adalah kondisi di mana tinggi badan seorang anak jauh lebih rendah dibandingkan dengan standar tinggi badan anak seusianya. Hal ini biasanya disebabkan oleh malnutrisi kronis, terutama pada usia dini. Stunting dapat memengaruhi pertumbuhan fisik dan perkembangan kognitif anak, serta berpotensi menyebabkan masalah kesehatan di kemudian hari.")
-    
+
+    st.header("Informasi Dataset")
+    st.write("Dataframe:")
+    st.write(df)
+
     st.write("### Deskripsi Dataset")
     st.write("Dataset ini berisi informasi tentang status gizi anak, khususnya terkait dengan stunting. Dataset ini digunakan untuk menganalisis dan memprediksi status gizi anak berdasarkan berbagai faktor, termasuk jenis kelamin, umur, berat badan, tinggi badan, dan beberapa variabel lainnya.")
     
@@ -55,10 +59,6 @@ if page == "Informasi Dataset":
     
     st.write("### Sumber Dataset")
     st.write("Sumber dataset dapat ditambahkan di sini.")
-        
-    st.header("Informasi Dataset")
-    st.write("Dataframe:")
-    st.write(df)
 
 elif page == "Visualisasi":
     st.header("Visualisasi Data")
