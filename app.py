@@ -29,7 +29,7 @@ df = load_data()
 
 # Buat sidebar untuk navigasi
 st.sidebar.title("Navigasi")
-page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model"))
+page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model", "Input Data Baru"))
 
 if page == "Informasi Dataset":
     st.header("Informasi Dataset")
