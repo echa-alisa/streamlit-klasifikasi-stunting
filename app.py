@@ -311,7 +311,7 @@ elif page == "Input Data Baru":
             prediksi_class = np.argmax(prediksi_prob, axis=1)
 
             # Tampilkan hasil prediksi dengan probabilitas
-            st.write(f"Probabilitas untuk Status "Normal": {prediksi_prob[0][0]*100:.2f}%")
-            st.write(f"Probabilitas untuk Status "Saverely Stunting" {prediksi_prob[0][1]*100:.2f}%")
-            st.write(f"Probabilitas untuk Status "Stunting": {prediksi_prob[0][2]*100:.2f}%")
+            st.write(f"Probabilitas untuk Status Normal: {prediksi_prob[0][0]*100:.2f}%")
+            st.write(f"Probabilitas untuk Status Saverely Stunting {prediksi_prob[0][1]*100:.2f}%")
+            st.write(f"Probabilitas untuk Status Stunting: {prediksi_prob[0][2]*100:.2f}%")
 
