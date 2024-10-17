@@ -276,7 +276,7 @@ elif page == "Input Data Baru":
         BB_Lahir = st.number_input('Berat Lahir (kg)', min_value=0.0, max_value=5.0)
         TB_Lahir = st.number_input('Tinggi Lahir (cm)', min_value=0.0, max_value=60.0)
         ZS_TB_U = st.number_input('Z-Score Tinggi Badan menurut Umur', min_value=-5.0, max_value=5.0)
-    
+
         # Tombol untuk melakukan prediksi
         if st.button('Prediksi Status'):
             # Preprocessing data input seperti di halaman model
@@ -285,25 +285,26 @@ elif page == "Input Data Baru":
                 'Umur': [Umur],
                 'Berat': [Berat],
                 'Tinggi': [Tinggi],
-                'BB_Lahir': [BB_Lahir],
+                'BB_Lahir': [Bb_Lahir],
                 'TB_Lahir': [TB_Lahir],
                 'ZS_TB_U': [ZS_TB_U]
             })
-    
+
             # Konversi jenis kelamin ke angka
             input_data['JK'] = 1 if JK == 'Perempuan' else 0
-    
+
             # Skalakan input data
             scaler = MinMaxScaler()
             input_data_scaled = scaler.fit_transform(input_data)
-    
+
             # Reshape untuk cocok dengan input model
             input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
-    
+
             # Prediksi dengan model yang sudah dilatih
+            model = st.session_state['model']
             prediksi = model.predict(input_data_scaled)
             prediksi_class = np.argmax(prediksi, axis=1)
-    
+
             # Tampilkan hasil prediksi
-            Status = ['Tidak Stunting', 'Saverely Stunting', 'Stunting']
-            st.write(f"Hasil prediksi: {Status[prediksi_class[0]]}")
+            status = ['Normal', 'Saverely Stunting', 'Stunting']
+            st.write(f"Hasil prediksi: {status[prediksi_class[0]]}")
