@@ -306,5 +306,5 @@ elif page == "Input Data Baru":
             prediksi_class = np.argmax(prediksi, axis=1)
 
             # Tampilkan hasil prediksi
-            status = ['Normal', 'Saverely Stunting', 'Stunting']
+            status = ['Normal', 'Stunting', 'Saverely Stunting']
             st.write(f"Hasil prediksi: {status[prediksi_class[0]]}")
