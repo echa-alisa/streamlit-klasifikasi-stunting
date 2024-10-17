@@ -269,7 +269,7 @@ elif page == "Input Data Baru":
         st.warning("Model belum dilatih. Silakan latih model terlebih dahulu di halaman 'Jalankan Model'.")
     else:
         # Form input data
-        JK = st.selectbox('Jenis Kelamin', ['Laki-laki', 'Perempuan'])
+        JK = st.selectbox('Jenis Kelamin (0: Laki-laki, 1: Perempuan)', [0, 1])
         Umur = st.number_input('Umur (bulan)', min_value=0, max_value=60)
         Berat = st.number_input('Berat (kg)', min_value=0.0, max_value=30.0)
         Tinggi = st.number_input('Tinggi (cm)', min_value=0.0, max_value=150.0)
@@ -289,9 +289,6 @@ elif page == "Input Data Baru":
                 'TB_Lahir': [TB_Lahir],
                 'ZS_TB_U': [ZS_TB_U]
             })
-
-            # Konversi jenis kelamin ke angka
-            input_data['JK'] = 1 if JK == 'Perempuan' else 0
 
             # Skalakan input data
             scaler = MinMaxScaler()
