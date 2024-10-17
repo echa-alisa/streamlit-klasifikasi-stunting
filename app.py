@@ -257,3 +257,46 @@ elif page == "Jalankan Model":
         
         st.write("Dengan menggunakan confusion matrix dan metrik evaluasi ini, kita dapat lebih memahami "
                  "kinerja model kita dan membuat perbaikan yang diperlukan.")
+
+elif page == "Input Data Baru":
+    st.header('Input Data Baru untuk Prediksi Status Stunting')
+
+    # Form input data
+    JK = st.selectbox('Jenis Kelamin', ['Laki-laki', 'Perempuan'])
+    Umur = st.number_input('Umur (bulan)', min_value=0, max_value=60)
+    Berat = st.number_input('Berat (kg)', min_value=0.0, max_value=30.0)
+    Tinggi = st.number_input('Tinggi (cm)', min_value=0.0, max_value=150.0)
+    BB_Lahir = st.number_input('Berat Lahir (kg)', min_value=0.0, max_value=5.0)
+    TB_Lahir = st.number_input('Tinggi Lahir (cm)', min_value=0.0, max_value=60.0)
+    ZS_TB_U = st.number_input('Z-Score Tinggi Badan menurut Umur', min_value=-5.0, max_value=5.0)
+
+    # Tombol untuk melakukan prediksi
+    if st.button('Prediksi Status'):
+        # Preprocessing data input seperti di halaman model
+        input_data = pd.DataFrame({
+            'JK': [JK],
+            'Umur': [Umur],
+            'Berat': [Berat],
+            'Tinggi': [Tinggi],
+            'BB_Lahir': [BB_Lahir],
+            'TB_Lahir': [TB_lahir],
+            'ZS_TB_U': [ZS_TB_U]
+        })
+
+        # Konversi jenis kelamin ke angka
+        input_data['JK'] = 1 if JK == 'Perempuan' else 0
+
+        # Skalakan input data
+        scaler = MinMaxScaler()
+        input_data_scaled = scaler.fit_transform(input_data)
+
+        # Reshape untuk cocok dengan input model
+        input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
+
+        # Prediksi dengan model yang sudah dilatih
+        prediksi = model.predict(input_data_scaled)
+        prediksi_class = np.argmax(prediksi, axis=1)
+
+        # Tampilkan hasil prediksi
+        Status = ['Tidak Stunting', 'Saverely Stunting', 'Stunting']
+        st.write(f"Hasil prediksi: {Status[prediksi_class[0]]}")
