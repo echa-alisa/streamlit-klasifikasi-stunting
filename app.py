@@ -279,7 +279,7 @@ elif page == "Input Data Baru":
             'Berat': [Berat],
             'Tinggi': [Tinggi],
             'BB_Lahir': [BB_Lahir],
-            'TB_Lahir': [TB_lahir],
+            'TB_Lahir': [TB_Lahir],
             'ZS_TB_U': [ZS_TB_U]
         })
 
