@@ -31,7 +31,64 @@ df = load_data()
 st.sidebar.title("Navigasi")
 page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Model LSTM", "Input Data Baru"))
 
-if page == "Model LSTM":
+if page == "Informasi Dataset":
+    st.header("Informasi Dataset")
+    st.write("### Apa itu Stunting?")
+    st.write("Stunting adalah kondisi di mana tinggi badan seorang anak jauh lebih rendah dibandingkan dengan standar tinggi badan anak seusianya. Hal ini biasanya disebabkan oleh malnutrisi kronis, terutama pada usia dini. Stunting dapat memengaruhi pertumbuhan fisik dan perkembangan kognitif anak, serta berpotensi menyebabkan masalah kesehatan di kemudian hari.")
+
+    st.header("Informasi Dataset")
+    st.write("Dataframe:")
+    st.write(df)
+
+    st.write("### Deskripsi Dataset")
+    st.write("Dataset ini berisi informasi tentang status gizi anak, khususnya terkait dengan stunting. Dataset ini digunakan untuk menganalisis dan memprediksi status gizi anak berdasarkan berbagai faktor, termasuk jenis kelamin, umur, berat badan, tinggi badan, dan beberapa variabel lainnya.")
+    
+    st.write("### Fitur-Fitur dalam Dataset")
+    st.write("- **JK (Jenis Kelamin)**: Kategori yang menunjukkan jenis kelamin anak.")
+    st.write("- **Umur**: Usia anak dalam bulan.")
+    st.write("- **Berat**: Berat badan anak dalam kilogram.")
+    st.write("- **Tinggi**: Tinggi badan anak dalam sentimeter.")
+    st.write("- **BB_Lahir**: Berat badan anak saat lahir.")
+    st.write("- **TB_Lahir**: Tinggi badan anak saat lahir.")
+    st.write("- **ZS_TB_U**: Z-Score tinggi badan menurut umur.")
+    st.write("- **Status**: Kategori status anak.")
+    
+    st.write("### Tujuan Penggunaan Dataset")
+    st.write("Dataset ini digunakan untuk menganalisis faktor-faktor yang berkontribusi terhadap stunting pada anak, serta untuk membangun model klasifikasi untuk mengidentifikasi risiko stunting.")
+    
+    st.write("### Sumber Dataset")
+    st.write("Sumber dataset ini berasal dari Dinas Kesehatan Kota Bogor.")
+
+    st.write("### Split Dataset")
+    st.write("Pembagian dataset ini menggunakan 80:20, di mana 80% akan digunakan sebagai data test dan 20% sebagai data latih.")
+
+elif page == "Visualisasi":
+    st.header("Visualisasi Data")
+    
+    # Visualisasi distribusi jenis kelamin
+    st.subheader("Distribusi Jenis Kelamin")
+    st.write("Grafik ini menunjukkan distribusi jenis kelamin dalam dataset. "
+             "Dari grafik ini, kita dapat melihat perbandingan antara jumlah anak laki-laki dan perempuan.")
+    st.bar_chart(df['JK'].value_counts())
+
+    # Visualisasi distribusi tinggi badan
+    st.subheader("Distribusi Tinggi Badan")
+    st.write("Grafik ini menunjukkan distribusi tinggi badan anak-anak dalam dataset. "
+             "Garis KDE (Kernel Density Estimate) memberikan gambaran yang lebih halus mengenai "
+             "distribusi tinggi badan tersebut.")
+    fig1, ax1 = plt.subplots()
+    sns.histplot(df['Tinggi'], kde=True, ax=ax1, color='purple', bins=30)
+    st.pyplot(fig1)
+
+    # Visualisasi distribusi Z-Score tinggi badan
+    st.subheader("Distribusi Z-Score Tinggi Badan")
+    st.write("Grafik ini menunjukkan distribusi Z-Score tinggi badan. Z-Score digunakan untuk "
+             "mengukur seberapa jauh tinggi badan anak dari rata-rata tinggi badan populasi sebayanya.")
+    fig2, ax2 = plt.subplots()
+    sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
+    st.pyplot(fig2)
+
+elif page == "Model LSTM":
     st.header('Model LSTM')
 
     # Data preprocessing
@@ -180,13 +237,15 @@ if page == "Model LSTM":
         })
 
         st.write(metrics_df)
-elif page == "Input Data Baru":
-    st.header('Input Data Baru untuk Prediksi Status Kesehatan Bayi')
 
+elif page == "Input Data Baru":
+    st.header('Input Data Baru untuk Prediksi Status Stunting')
+
+    # Pastikan model sudah dilatih dan disimpan di session state
     if 'model' not in st.session_state:
-        st.warning("Model belum dilatih. Silakan latih model terlebih dahulu di halaman 'Model LSTM'.")
+        st.warning("Model belum dilatih. Silakan latih model terlebih dahulu di halaman 'Jalankan Model'.")
     else:
-        # Input fitur data baru
+        # Form input data
         JK = st.selectbox('Jenis Kelamin (0: Laki-laki, 1: Perempuan)', [0, 1])
         Umur = st.number_input('Umur (bulan)', min_value=0, max_value=60)
         Berat = st.number_input('Berat (kg)', min_value=0.0, max_value=30.0)
@@ -195,8 +254,9 @@ elif page == "Input Data Baru":
         TB_Lahir = st.number_input('Tinggi Lahir (cm)', min_value=0.0, max_value=60.0)
         ZS_TB_U = st.number_input('Z-Score Tinggi Badan menurut Umur', min_value=-5.0, max_value=5.0)
 
-        # Tombol untuk prediksi
+        # Tombol untuk melakukan prediksi
         if st.button('Prediksi Status'):
+            # Preprocessing data input seperti di halaman model
             input_data = pd.DataFrame({
                 'JK': [JK],
                 'Umur': [Umur],
@@ -207,18 +267,27 @@ elif page == "Input Data Baru":
                 'ZS_TB_U': [ZS_TB_U]
             })
 
-            # Scaling data baru
+            # Skalakan input data
             scaler = MinMaxScaler()
             input_data_scaled = scaler.fit_transform(input_data)
+
+            # Reshape untuk cocok dengan input model
             input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
 
-            # Ambil model dari session state
+            # Prediksi dengan model yang sudah dilatih
             model = st.session_state['model']
             prediksi = model.predict(input_data_scaled)
             prediksi_class = np.argmax(prediksi, axis=1)
 
-            # Definisikan label untuk kelas prediksi
-            status = ['Normal', 'Severely Stunting', 'Stunting']
-
             # Tampilkan hasil prediksi
+            status = ['Normal', 'Saverely Stunting', 'Stunting']
             st.write(f"Hasil prediksi: {status[prediksi_class[0]]}")
+
+            # Prediksi probabilitas untuk input data
+            prediksi_prob = model.predict(input_data_scaled)
+            prediksi_class = np.argmax(prediksi_prob, axis=1)
+
+            # Tampilkan hasil prediksi dengan probabilitas
+            st.write(f"Probabilitas untuk Status Normal: {prediksi_prob[0][0]*100:.2f}%")
+            st.write(f"Probabilitas untuk Status Saverely Stunting {prediksi_prob[0][1]*100:.2f}%")
+            st.write(f"Probabilitas untuk Status Stunting: {prediksi_prob[0][2]*100:.2f}%")
