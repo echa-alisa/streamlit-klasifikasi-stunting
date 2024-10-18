@@ -88,6 +88,23 @@ elif page == "Visualisasi":
     sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
     st.pyplot(fig2)
 
+    # Visualisasi distribusi Status
+    st.subheader("Distribusi Status Gizi")
+    st.write("Grafik ini menunjukkan distribusi status gizi anak berdasarkan kategori Status (Normal, Severely Stunting, Stunting).")
+    
+    # Hitung frekuensi setiap kategori
+    status_counts = df['Status'].value_counts()
+
+    # Buat histogram
+    fig3, ax3 = plt.subplots()
+    sns.barplot(x=status_counts.index, y=status_counts.values, ax=ax3, palette='Set2')
+    ax3.set_title('Distribusi Status Gizi Anak')
+    ax3.set_xlabel('Status')
+    ax3.set_ylabel('Jumlah Anak')
+    
+    # Tampilkan histogram
+    st.pyplot(fig3)
+
 elif page == "Model LSTM":
     # Data preprocessing
     df['BB_Lahir'].replace(0, np.nan, inplace=True)
