@@ -89,8 +89,6 @@ elif page == "Visualisasi":
     st.pyplot(fig2)
 
 elif page == "Model LSTM":
-    st.header('Model LSTM')
-
     # Data preprocessing
     df['BB_Lahir'].replace(0, np.nan, inplace=True)
     df['TB_Lahir'].replace(0, np.nan, inplace=True)
@@ -119,7 +117,7 @@ elif page == "Model LSTM":
              "Ini mencakup informasi seperti jenis kelamin, umur, berat badan, tinggi badan, dan data kelahiran. "
              "Target (y) adalah variabel dependen yang ingin kita prediksi, yaitu status stunting anak.")
 
-    st.subheader("Latih Model LSTM")
+    st.header('Latih Model LSTM')
 
     # Skalakan fitur ke rentang [0, 1] menggunakan MinMaxScaler
     scaler = MinMaxScaler()
