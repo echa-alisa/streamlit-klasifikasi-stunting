@@ -29,68 +29,11 @@ df = load_data()
 
 # Buat sidebar untuk navigasi
 st.sidebar.title("Navigasi")
-page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Jalankan Model", "Input Data Baru"))
+page = st.sidebar.radio("Pilih Halaman:", ("Informasi Dataset", "Visualisasi", "Model LSTM", "Input Data Baru"))
 
-if page == "Informasi Dataset":
-    st.header("Informasi Dataset")
-    st.write("### Apa itu Stunting?")
-    st.write("Stunting adalah kondisi di mana tinggi badan seorang anak jauh lebih rendah dibandingkan dengan standar tinggi badan anak seusianya. Hal ini biasanya disebabkan oleh malnutrisi kronis, terutama pada usia dini. Stunting dapat memengaruhi pertumbuhan fisik dan perkembangan kognitif anak, serta berpotensi menyebabkan masalah kesehatan di kemudian hari.")
+if page == "Model LSTM":
+    st.header('Model LSTM')
 
-    st.header("Informasi Dataset")
-    st.write("Dataframe:")
-    st.write(df)
-
-    st.write("### Deskripsi Dataset")
-    st.write("Dataset ini berisi informasi tentang status gizi anak, khususnya terkait dengan stunting. Dataset ini digunakan untuk menganalisis dan memprediksi status gizi anak berdasarkan berbagai faktor, termasuk jenis kelamin, umur, berat badan, tinggi badan, dan beberapa variabel lainnya.")
-    
-    st.write("### Fitur-Fitur dalam Dataset")
-    st.write("- **JK (Jenis Kelamin)**: Kategori yang menunjukkan jenis kelamin anak.")
-    st.write("- **Umur**: Usia anak dalam bulan.")
-    st.write("- **Berat**: Berat badan anak dalam kilogram.")
-    st.write("- **Tinggi**: Tinggi badan anak dalam sentimeter.")
-    st.write("- **BB_Lahir**: Berat badan anak saat lahir.")
-    st.write("- **TB_Lahir**: Tinggi badan anak saat lahir.")
-    st.write("- **ZS_TB_U**: Z-Score tinggi badan menurut umur.")
-    st.write("- **Status**: Kategori status anak.")
-    
-    st.write("### Tujuan Penggunaan Dataset")
-    st.write("Dataset ini digunakan untuk menganalisis faktor-faktor yang berkontribusi terhadap stunting pada anak, serta untuk membangun model klasifikasi untuk mengidentifikasi risiko stunting.")
-    
-    st.write("### Sumber Dataset")
-    st.write("Sumber dataset ini berasal dari Dinas Kesehatan Kota Bogor.")
-
-    st.write("### Split Dataset")
-    st.write("Pembagian dataset ini menggunakan 80:20, di mana 80% akan digunakan sebagai data test dan 20% sebagai data latih.")
-
-elif page == "Visualisasi":
-    st.header("Visualisasi Data")
-    
-    # Visualisasi distribusi jenis kelamin
-    st.subheader("Distribusi Jenis Kelamin")
-    st.write("Grafik ini menunjukkan distribusi jenis kelamin dalam dataset. "
-             "Dari grafik ini, kita dapat melihat perbandingan antara jumlah anak laki-laki dan perempuan.")
-    st.bar_chart(df['JK'].value_counts())
-
-    # Visualisasi distribusi tinggi badan
-    st.subheader("Distribusi Tinggi Badan")
-    st.write("Grafik ini menunjukkan distribusi tinggi badan anak-anak dalam dataset. "
-             "Garis KDE (Kernel Density Estimate) memberikan gambaran yang lebih halus mengenai "
-             "distribusi tinggi badan tersebut.")
-    fig1, ax1 = plt.subplots()
-    sns.histplot(df['Tinggi'], kde=True, ax=ax1, color='purple', bins=30)
-    st.pyplot(fig1)
-
-    # Visualisasi distribusi Z-Score tinggi badan
-    st.subheader("Distribusi Z-Score Tinggi Badan")
-    st.write("Grafik ini menunjukkan distribusi Z-Score tinggi badan. Z-Score digunakan untuk "
-             "mengukur seberapa jauh tinggi badan anak dari rata-rata tinggi badan populasi sebayanya.")
-    fig2, ax2 = plt.subplots()
-    sns.histplot(df['ZS_TB_U'], kde=True, ax=ax2, color='green', bins=30)
-    st.pyplot(fig2)
-
-elif page == "Jalankan Model":
-    st.header('Jalankan Model')
-    
     # Data preprocessing
     df['BB_Lahir'].replace(0, np.nan, inplace=True)
     df['TB_Lahir'].replace(0, np.nan, inplace=True)
@@ -105,10 +48,10 @@ elif page == "Jalankan Model":
 
     # Menentukan X dan y
     st.header('Data Selection')
-    X = df[['JK', 'Umur', 'Berat','Tinggi', 'BB_Lahir', 'TB_Lahir', 'ZS_TB_U']]
+    X = df[['JK', 'Umur', 'Berat', 'Tinggi', 'BB_Lahir', 'TB_Lahir', 'ZS_TB_U']]
     st.write('Features (X):')
     st.write(X)
-    
+
     y = df['Status']
     st.write('Target (y):')
     st.write(y)
@@ -137,31 +80,28 @@ elif page == "Jalankan Model":
     X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
 
-    # Tambahkan input parameter
-    st.header('Pilih Parameter Training')
-    available_neurons = [16, 32, 64, 128, 256, 512, 1024]
-    available_epochs = [10, 20, 50, 100, 200, 500]
-    available_batch_sizes = [32, 64, 128, 256, 512, 1024]
- 
-    neurons = st.select_slider('Jumlah Neuron', options=available_neurons)
-    epochs = st.select_slider('Epoch', options=available_epochs)
-    batch_size = st.select_slider('Batch Size', options=available_batch_sizes)
-    
-    # Learning Rate
+    # Tidak ada input parameter dari pengguna, hard-code parameter training
+    neurons = 64
+    epochs = 50
+    batch_size = 64
     learning_rate = 0.001
-    st.write(f"Learning Rate yang digunakan: {learning_rate}")
+
+    st.write(f"Jumlah Neuron: {neurons}")
+    st.write(f"Jumlah Epoch: {epochs}")
+    st.write(f"Batch Size: {batch_size}")
+    st.write(f"Learning Rate: {learning_rate}")
 
     # Tambahkan tombol untuk melatih model
     if st.button('Latih Model'):
         # Membangun Model LSTM
         model = Sequential()
-        model.add(LSTM(neurons, input_shape=(X_train.shape[1], 1), return_sequences=True))
-        model.add(Dropout(0.5))
-        model.add(LSTM(neurons, return_sequences=False))
-        model.add(Dropout(0.5))
+        model.add(LSTM(neurons, activation='relu', input_shape=(X_train.shape[1], 1), return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(neurons, activation='relu', return_sequences=False))
+        model.add(Dropout(0.2))
         model.add(Dense(3, activation='softmax'))
 
-        # Compile Model dengan learning rate yang dipilih
+        # Compile Model
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
                       loss='categorical_crossentropy', metrics=['accuracy'])
 
@@ -180,7 +120,7 @@ elif page == "Jalankan Model":
         st.subheader('Evaluasi Model')
         st.write(f"Loss: {loss:.4f}")
         st.write(f"Accuracy: {accuracy:.4f}")
-        
+
         # Plot accuracy dan loss
         st.subheader('Grafik Akurasi dan Loss')
         fig, ax = plt.subplots(1, 2, figsize=(12, 4))
@@ -204,114 +144,39 @@ elif page == "Jalankan Model":
         # Tampilkan Confusion Matrix
         cm = confusion_matrix(y_true, y_pred_classes)
 
-        # Tampilkan Confusion Matrix dalam bentuk tabel
-        st.subheader('Actual v LSTM')
-        cm_df = pd.DataFrame(cm, index=['Actual Class 0', 'Actual Class 1', 'Actual Class 2'], columns=['LSTM Class 0', 'LSTM Class 1', 'LSTM Class 2'])
-        st.write(cm_df)
+        st.subheader('Confusion Matrix')
+        fig, ax = plt.subplots(figsize=(6, 6))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax,
+                    xticklabels=['Class 0', 'Class 1', 'Class 2'], yticklabels=['Class 0', 'Class 1', 'Class 2'])
+        ax.set_xlabel('Predicted')
+        ax.set_ylabel('True')
+        st.pyplot(fig)
 
         # Menghitung metrik evaluasi
-        TP = np.diag(cm)  # True Positives
-        FP = np.sum(cm, axis=0) - TP  # False Positives
-        FN = np.sum(cm, axis=1) - TP  # False Negatives
-        TN = np.sum(cm) - (FP + FN + TP)  # True Negatives
-        
+        TP = np.diag(cm)
+        FP = np.sum(cm, axis=0) - TP
+        FN = np.sum(cm, axis=1) - TP
+        TN = np.sum(cm) - (FP + FN + TP)
+
         # Akurasi
         accuracy = np.sum(TP) / np.sum(cm)
-        
+
         # Presisi dan Recall per kelas
         precision = TP / (TP + FP)
         recall = TP / (TP + FN)
-        
+
         # F1-Score per kelas
         f1_score = 2 * (precision * recall) / (precision + recall)
-        
+
         # Menampilkan metrik evaluasi
         st.subheader("Metrik Evaluasi")
         st.write(f"Akurasi: {accuracy:.4f}")
-        
-        # Tampilkan Presisi, Recall, dan F1-Score untuk setiap kelas
+
         metrics_df = pd.DataFrame({
             'Kelas': ['Class 0', 'Class 1', 'Class 2'],
             'Presisi': precision,
             'Recall': recall,
             'F1-Score': f1_score
         })
-        
+
         st.write(metrics_df)
-
-        # st.write("Confusion matrix adalah tabel yang digunakan untuk mengevaluasi kinerja model klasifikasi. "
-        #  "Ini menunjukkan jumlah prediksi yang benar dan salah untuk setiap kelas. "
-        #  "Dari confusion matrix, kita dapat menghitung metrik evaluasi lain seperti akurasi, presisi, "
-        #  "recall, dan F1-score. Berikut adalah penjelasan dari masing-masing metrik tersebut:")
-
-        # st.write("1. **Akurasi**: Mengukur proporsi prediksi yang benar dari total prediksi. "
-        #          "Rumus: (TP + TN) / (TP + TN + FP + FN), di mana TP = True Positives, TN = True Negatives, "
-        #          "FP = False Positives, FN = False Negatives.")
-        
-        # st.write("2. **Presisi**: Mengukur proporsi prediksi positif yang benar dari seluruh prediksi positif. "
-        #          "Rumus: TP / (TP + FP). Ini menunjukkan seberapa banyak prediksi positif kita yang benar.")
-        
-        # st.write("3. **Recall** (Sensitivity): Mengukur proporsi prediksi positif yang benar dari semua kasus positif. "
-        #          "Rumus: TP / (TP + FN). Ini menunjukkan seberapa baik model kita dalam menangkap semua kasus positif.")
-        
-        # st.write("4. **F1-Score**: Merupakan rata-rata harmonis dari presisi dan recall. F1-score memberikan keseimbangan antara "
-        #          "presisi dan recall, yang berguna ketika kita memiliki distribusi kelas yang tidak seimbang. "
-        #          "Rumus: 2 * (Presisi * Recall) / (Presisi + Recall).")
-        
-        # st.write("Dengan menggunakan confusion matrix dan metrik evaluasi ini, kita dapat lebih memahami "
-        #          "kinerja model kita dan membuat perbaikan yang diperlukan.")
-
-elif page == "Input Data Baru":
-    st.header('Input Data Baru untuk Prediksi Status Stunting')
-
-    # Pastikan model sudah dilatih dan disimpan di session state
-    if 'model' not in st.session_state:
-        st.warning("Model belum dilatih. Silakan latih model terlebih dahulu di halaman 'Jalankan Model'.")
-    else:
-        # Form input data
-        JK = st.selectbox('Jenis Kelamin (0: Laki-laki, 1: Perempuan)', [0, 1])
-        Umur = st.number_input('Umur (bulan)', min_value=0, max_value=60)
-        Berat = st.number_input('Berat (kg)', min_value=0.0, max_value=30.0)
-        Tinggi = st.number_input('Tinggi (cm)', min_value=0.0, max_value=150.0)
-        BB_Lahir = st.number_input('Berat Lahir (kg)', min_value=0.0, max_value=5.0)
-        TB_Lahir = st.number_input('Tinggi Lahir (cm)', min_value=0.0, max_value=60.0)
-        ZS_TB_U = st.number_input('Z-Score Tinggi Badan menurut Umur', min_value=-5.0, max_value=5.0)
-
-        # Tombol untuk melakukan prediksi
-        if st.button('Prediksi Status'):
-            # Preprocessing data input seperti di halaman model
-            input_data = pd.DataFrame({
-                'JK': [JK],
-                'Umur': [Umur],
-                'Berat': [Berat],
-                'Tinggi': [Tinggi],
-                'BB_Lahir': [BB_Lahir],
-                'TB_Lahir': [TB_Lahir],
-                'ZS_TB_U': [ZS_TB_U]
-            })
-
-            # Skalakan input data
-            scaler = MinMaxScaler()
-            input_data_scaled = scaler.fit_transform(input_data)
-
-            # Reshape untuk cocok dengan input model
-            input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
-
-            # Prediksi dengan model yang sudah dilatih
-            model = st.session_state['model']
-            prediksi = model.predict(input_data_scaled)
-            prediksi_class = np.argmax(prediksi, axis=1)
-
-            # Tampilkan hasil prediksi
-            status = ['Normal', 'Saverely Stunting', 'Stunting']
-            st.write(f"Hasil prediksi: {status[prediksi_class[0]]}")
-
-            # Prediksi probabilitas untuk input data
-            prediksi_prob = model.predict(input_data_scaled)
-            prediksi_class = np.argmax(prediksi_prob, axis=1)
-
-            # Tampilkan hasil prediksi dengan probabilitas
-            st.write(f"Probabilitas untuk Status Normal: {prediksi_prob[0][0]*100:.2f}%")
-            st.write(f"Probabilitas untuk Status Saverely Stunting {prediksi_prob[0][1]*100:.2f}%")
-            st.write(f"Probabilitas untuk Status Stunting: {prediksi_prob[0][2]*100:.2f}%")
-
