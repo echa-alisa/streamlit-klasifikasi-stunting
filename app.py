@@ -83,7 +83,7 @@ if page == "Model LSTM":
     # Tidak ada input parameter dari pengguna, hard-code parameter training
     neurons = 64
     epochs = 50
-    batch_size = 64
+    batch_size = 128
     learning_rate = 0.001
 
     st.write(f"Jumlah Neuron: {neurons}")
@@ -180,3 +180,45 @@ if page == "Model LSTM":
         })
 
         st.write(metrics_df)
+elif page == "Input Data Baru":
+    st.header('Input Data Baru untuk Prediksi Status Kesehatan Bayi')
+
+    if 'model' not in st.session_state:
+        st.warning("Model belum dilatih. Silakan latih model terlebih dahulu di halaman 'Model LSTM'.")
+    else:
+        # Input fitur data baru
+        JK = st.selectbox('Jenis Kelamin (0: Laki-laki, 1: Perempuan)', [0, 1])
+        Umur = st.number_input('Umur (bulan)', min_value=0, max_value=60)
+        Berat = st.number_input('Berat (kg)', min_value=0.0, max_value=30.0)
+        Tinggi = st.number_input('Tinggi (cm)', min_value=0.0, max_value=150.0)
+        BB_Lahir = st.number_input('Berat Lahir (kg)', min_value=0.0, max_value=5.0)
+        TB_Lahir = st.number_input('Tinggi Lahir (cm)', min_value=0.0, max_value=60.0)
+        ZS_TB_U = st.number_input('Z-Score Tinggi Badan menurut Umur', min_value=-5.0, max_value=5.0)
+
+        # Tombol untuk prediksi
+        if st.button('Prediksi Status'):
+            input_data = pd.DataFrame({
+                'JK': [JK],
+                'Umur': [Umur],
+                'Berat': [Berat],
+                'Tinggi': [Tinggi],
+                'BB_Lahir': [BB_Lahir],
+                'TB_Lahir': [TB_Lahir],
+                'ZS_TB_U': [ZS_TB_U]
+            })
+
+            # Scaling data baru
+            scaler = MinMaxScaler()
+            input_data_scaled = scaler.fit_transform(input_data)
+            input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
+
+            # Ambil model dari session state
+            model = st.session_state['model']
+            prediksi = model.predict(input_data_scaled)
+            prediksi_class = np.argmax(prediksi, axis=1)
+
+            # Definisikan label untuk kelas prediksi
+            status = ['Normal', 'Severely Stunting', 'Stunting']
+
+            # Tampilkan hasil prediksi
+            st.write(f"Hasil prediksi: {status[prediksi_class[0]]}")
