@@ -119,6 +119,8 @@ elif page == "Model LSTM":
              "Ini mencakup informasi seperti jenis kelamin, umur, berat badan, tinggi badan, dan data kelahiran. "
              "Target (y) adalah variabel dependen yang ingin kita prediksi, yaitu status stunting anak.")
 
+    st.subheader("Latih Model LSTM")
+
     # Skalakan fitur ke rentang [0, 1] menggunakan MinMaxScaler
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(X)
