@@ -151,8 +151,8 @@ elif page == "Model LSTM":
     X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled_encoded, test_size=0.2, random_state=42)
 
     # Menambahkan dimensi waktu (1) ke data pelatihan dan pengujian
-    X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
-    X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
+    X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
+    X_test = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
 
     # Tidak ada input parameter dari pengguna, hard-code parameter training
     neurons = 64
@@ -169,7 +169,7 @@ elif page == "Model LSTM":
     if st.button('Latih Model'):
         # Membangun Model LSTM
         model = Sequential()
-        model.add(LSTM(neurons, activation='relu', input_shape=(X_train.shape[1], 1), return_sequences=True))
+        model.add(LSTM(num_neuron, activation='relu',return_sequences=True, input_shape=(1, X_train.shape[2])))
         model.add(Dropout(0.2))
         model.add(LSTM(neurons, activation='relu', return_sequences=False))
         model.add(Dropout(0.2))
@@ -289,7 +289,7 @@ elif page == "Input Data Baru":
             input_data_scaled = scaler.fit_transform(input_data)
 
             # Reshape untuk cocok dengan input model
-            input_data_scaled = input_data_scaled.reshape(1, input_data_scaled.shape[1], 1)
+            input_data_scaled = input_data_scaled.reshape(1, 1, input_data_scaled.shape[1])
 
             # Prediksi dengan model yang sudah dilatih
             model = st.session_state['model']
