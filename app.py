@@ -131,10 +131,9 @@ elif page == "Jalankan Model LSTM":
     # Penjelasan tentang features dan target
     st.subheader("Penjelasan tentang Features (X) dan Target (y)")
     st.write("Features (X) adalah variabel independen yang digunakan untuk memprediksi status stunting. "
-         "Ini mencakup informasi seperti jenis kelamin, umur, berat badan, tinggi badan, dan data kelahiran. "
          "Dalam hal ini, X terdiri dari kolom **JK (Jenis Kelamin)**, **Umur**, **Berat**, **Tinggi**, "
          "**BB_Lahir**, **TB_Lahir**, dan **ZS_TB_U**. "
-         "Target (y) adalah variabel dependen yang ingin kita prediksi, yaitu kolom **Status** yang menunjukkan "
+         "Target (y) adalah variabel dependen yang ingin diklasifikasi, yaitu kolom **Status** yang menunjukkan "
          "kategori status stunting anak.")
 
     st.header('Latih Model LSTM')
