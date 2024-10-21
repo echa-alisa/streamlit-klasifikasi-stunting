@@ -49,6 +49,7 @@ if page == "Informasi Dataset":
     st.write("- **Tinggi**: Tinggi badan anak dalam sentimeter.")
     st.write("- **BB_Lahir**: Berat badan anak saat lahir.")
     st.write("- **TB_Lahir**: Tinggi badan anak saat lahir.")
+    st.write("- **TB_U**: Tinggi badan anak menurut umur.")
     st.write("- **ZS_TB_U**: Z-Score tinggi badan menurut umur.")
     st.write("- **Status**: Kategori status anak.")
     
